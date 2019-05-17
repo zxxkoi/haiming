@@ -1,0 +1,93 @@
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title>bbs club</title>#}
+{#    <link rel="stylesheet" href="/static/css/bootstrap.min.css">#}
+{#    <link rel="stylesheet" href="/static/css/style.css">#}
+{#    <!--<link rel="stylesheet" href="/static/lib/editor/editor.css">-->#}
+{#    <!--<link rel="stylesheet" href="/static/lib/webuploader/webuploader.css">-->#}
+{#    <!--<script src="/static/lib/jquery-3.0.0.min.js"></script>-->#}
+{#    <!--<script src="/static/lib/markdownit.js"></script>-->#}
+{#    <!--<script src="/static/lib/webuploader/webuploader.withoutimage.js"></script>-->#}
+{#    <!--<script src="/static/lib/editor/editor.js"></script>-->#}
+{#    <!--<script src="/static/lib/editor/ext.js"></script>-->#}
+{#</head>#}
+{#<body>#}
+{% extends "topic/base.html" %}
+{% block title %}论坛主页{% endblock%}
+{% block main %}
+    <div id="main">
+        <div id="sidebar">
+            <div class="panel">
+            <div class="header">
+                <span class="col_fade">个人信息</span>
+            </div>
+            <div class="inner">
+                <div class="user_card">
+                    <div>
+                        <a class="user_avatar" href="{{ url_for('index.user_index', username = u.username) }}">
+                            <img src="{{ u.image }}" title={{ u.username }}>
+                        </a>
+                        <span class="user_name">
+                            <a class="dark" href="{{ url_for('index.user_index', username = u.username) }}">{{ u.username }}</a>
+                        </span>
+                        <div class="board clearfix">
+                                <div class="floor">
+                                    <span class="big"> </span>
+                                </div>
+                            </div>
+                        <div class="space clearfix"></div>
+                            <span class="signature">
+                                 {{ u.signature }}
+                            </span>
+                        </div>
+                    </div>
+            </div>
+        </div>
+            <div class="panel">
+                <div class="inner">
+                    <a href="/topic/new?board_id={{ bid }}" class="create_topic_btn">
+                        <span class="span-success">发布话题</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div id="content">
+            <div class="panel">
+                <div class="header">
+                    <a href="/topic"
+                        class="topic-tab current-tab">
+                        全部的帖子
+                    </a>
+                {% for b in bs %}
+                <a href="/topic?board_id={{ b.id }}"
+                   class="topic-tab current-tab">
+                    {{ b.title }}
+                </a>
+                {% endfor %}
+                </div>
+                <div class="inner post">
+                    <div class="topic_list">
+                        {% for t in ms %}
+                        <div class="cell">
+                            <div class="topic_title_wrapper">
+                                <a class="topic_title" href="{{ url_for('topic.detail', id=t.id) }}">
+                                    {{ t.title }}
+                                </a>
+                                <span>{{ t.replies() | count }} / {{ t.views }}</span>
+                                {# count(t.replies()) #}
+                                {# <span>{{ t.reply_count() }} / {{ t.views }}</span> #}
+                                {#len(Reply.all(topic_id=t.id))#}
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{#</body>#}
+{#<!--<script src="/static/js/test.js"></script>-->#}
+{#</html>#}
