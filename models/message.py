@@ -1,6 +1,6 @@
 import time
 
-from sqlalchemy import Column, Unicode, UnicodeText, Integer
+from sqlalchemy import Column, Unicode, UnicodeText, String
 
 from config import admin_mail
 
@@ -12,20 +12,20 @@ from tasks import send_async, mailer
 class Messages(SQLMixin, db.Model):
     title = Column(Unicode(50), nullable=False)
     content = Column(UnicodeText, nullable=False)
-    sender_id = Column(Integer, nullable=False)
-    receiver_id = Column(Integer, nullable=False)
+    sender_username = Column(String(50), nullable=False)
+    receiver_username = Column(String(50), nullable=False)
 
     @staticmethod
-    def send(title: str, content: str, sender_id: int, receiver_id: int):
+    def send(title: str, content: str, sender_username: str, receiver_username: str):
         form = dict(
             title=title,
             content=content,
-            sender_id=sender_id,
-            receiver_id=receiver_id
+            sender_username=sender_username,
+            receiver_username=receiver_username
         )
         Messages.new(form)
 
-        receiver: User = User.one(id=receiver_id)
+        receiver: User = User.one(username=receiver_username)
         import threading
         # form = dict(
         #     subject=form['title'],

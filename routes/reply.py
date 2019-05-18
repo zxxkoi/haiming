@@ -42,8 +42,8 @@ def send_mails(sender, receivers, reply_link, reply_content):
         form = dict(
             title='你被 {} AT 了'.format(sender.username),
             content=content,
-            sender_id=sender.id,
-            receiver_id=r.id
+            sender_username=sender.username,
+            receiver_username=r.username
         )
         Messages.new(form)
 

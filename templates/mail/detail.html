@@ -1,15 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>邮件详情</title>
-</head>
-<body>
-
-<p>发件人 id: {{ message.sender_id }}</p>
-<p>收件人 id: {{ message.receiver_id }}</p>
-<p>内容</p>
-<p>{{ message.content }}</p>
-
-</body>
-</html>
+{#<html lang="en">#}
+{#{#<head>#}
+{#{#    <meta charset="UTF-8">#}
+{#{#    <title>邮件详情</title>#}
+{#{#</head>#}
+{#{#<body>#}
+{% extends "topic/base.html" %}
+{% block title %}消息{% endblock %}
+{% block main %}
+    <div id="main">
+        <div id="content">
+            <div class="panel">
+                <div class="inner">
+                    <p>发件人 : {{ message.sender_username }}</p>
+                    <p>收件人 : {{ message.receiver_username }}</p>
+                    <p>内容 ：</p>
+                    <p>{{ message.content }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{#</body>#}
+{#</html>#}

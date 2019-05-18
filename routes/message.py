@@ -38,13 +38,13 @@ main = Blueprint('mail', __name__)
 def add():
     form = request.form.to_dict()
     u = current_user()
-    receiver_id = int(form['receiver_id'])
+    receiver_username = form['receiver_username']
     # 发邮件
     Messages.send(
         title=form['title'],
         content=form['content'],
-        sender_id=u.id,
-        receiver_id=receiver_id
+        sender_username=u.username,
+        receiver_username=receiver_username
     )
 
     return redirect(url_for('.index'))
@@ -54,8 +54,8 @@ def add():
 def index():
     u = current_user()
 
-    send = Messages.all(sender_id=u.id)
-    received = Messages.all(receiver_id=u.id)
+    send = Messages.all(sender_username=u.username)
+    received = Messages.all(receiver_username=u.username)
 
     t = render_template(
         'mail/index.html',
@@ -70,7 +70,7 @@ def view(id):
     message = Messages.one(id=id)
     u = current_user()
     # if u.id == mail.receiver_id or u.id == mail.sender_id:
-    if u.id in [message.receiver_id, message.sender_id]:
+    if u.username in [message.receiver_username, message.sender_username]:
         return render_template('mail/detail.html', message=message)
     else:
         return redirect(url_for('.index'))
