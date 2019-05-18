@@ -92,61 +92,52 @@ def profile():
         return render_template('profile.html', user=u)
 
 
-@main.route('/user/<int:id>')
-def user_detail(id):
-    u = User.one(id=id)
-    if u is None:
-        abort(404)
-    else:
-        return render_template('profile.html', user=u)
-
-
 def not_found(e):
     return render_template('404.html')
 
 
 def created_topic(user_id):
-    ts = Topic.all(user_id=user_id)
-    ts = sorted(ts, key=lambda t: t.reply_new().created_time, reverse=True)
-    return ts
-    # k = 'created_topic_{}'.format(user_id)
-    # # cache.delete(k)
-    # if cache.exists(k):
-    #     v = cache.get(k)
-    #     ts = json.loads(v)
-    #     return ts
-    # else:
-    #     ts = Topic.all(user_id=user_id)
-    #     ts = sorted(ts, key=lambda t: t.reply_new().created_time, reverse=True)
-    #     v = json.dumps([t.json() for t in ts])
-    #     cache.set(k, v)
-    #     return ts
+    # ts = Topic.all(user_id=user_id)
+    # ts = sorted(ts, key=lambda t: t.reply_new().created_time, reverse=True)
+    # return ts
+    k = 'created_topic_{}'.format(user_id)
+    if cache.exists(k):
+        v = cache.get(k)
+        ts = json.loads(v)
+        return ts
+    else:
+        ts = Topic.all(user_id=user_id)
+        ts = sorted(ts, key=lambda t: t.reply_new().created_time, reverse=True)
+        v = json.dumps([t.json() for t in ts])
+        cache.set(k, v)
+        cache.expire(k, 10)
+        return ts
 
 
 def replied_topic(user_id):
-    rs = Reply.all(user_id=user_id)
-    rt = set()
-    for r in rs:
-        t = Topic.one(id=r.topic_id)
-        rt.add(t)
-    rt = sorted(rt, key=lambda s: s.reply_new().created_time, reverse=True)
-    return rt
-    # k = 'replied_topic_{}'.format(user_id)
-    # # cache.delete(k)
-    # if cache.exists(k):
-    #     v = cache.get(k)
-    #     ts = json.loads(v)
-    #     return ts
-    # else:
-    #     rs = Reply.all(user_id=user_id)
-    #     rt = []
-    #     for r in rs:
-    #         t = Topic.one(id=r.topic_id)
-    #         rt.append(t)
-    #     rt = sorted(rt, key=lambda s: s.reply_new().created_time, reverse=True)
-    #     v = json.dumps([t.json() for t in rt])
-    #     cache.set(k, v)
-    #     return rt
+    # rs = Reply.all(user_id=user_id)
+    # rt = set()
+    # for r in rs:
+    #     t = Topic.one(id=r.topic_id)
+    #     rt.add(t)
+    # rt = sorted(rt, key=lambda s: s.reply_new().created_time, reverse=True)
+    # return rt
+    k = 'replied_topic_{}'.format(user_id)
+    if cache.exists(k):
+        v = cache.get(k)
+        ts = json.loads(v)
+        return ts
+    else:
+        rs = Reply.all(user_id=user_id)
+        rt = set()
+        for r in rs:
+            t = Topic.one(id=r.topic_id)
+            rt.add(t)
+        rt = sorted(rt, key=lambda s: s.reply_new().created_time, reverse=True)
+        v = json.dumps([t.json() for t in rt])
+        cache.set(k, v)
+        cache.expire(k, 10)
+        return rt
 
 
 @main.route('/user/<string:username>')
@@ -217,7 +208,6 @@ def update_password():
         r = 'success'
     else:
         r = 'error'
-    # return redirect('se')
     return render_template('setting.html', u=u, result=r, token=new_csrf_token())
 
 

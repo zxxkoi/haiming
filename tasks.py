@@ -51,8 +51,10 @@ def send_async(self, subject, author, to, plain):
         )
         m.plain = plain
         mailer.send(m)
-        time.sleep(10)
-        raise ValueError('tetest')
     except Exception as exc:
         raise self.retry(exc=exc, countdown=10)
+    # time.sleep(10)
+    # raise ValueError('tetest')
+    # except Exception as exc:
+    #     raise self.retry(exc=exc, countdown=10)
 

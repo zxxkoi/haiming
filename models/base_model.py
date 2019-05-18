@@ -32,6 +32,7 @@ class SQLMixin(object):
         for name, value in kwargs.items():
             setattr(m, name, value)
 
+        # db.session.commit()
         m.save()
 
     @classmethod
@@ -51,7 +52,6 @@ class SQLMixin(object):
     def json(self):
         d = dict()
         for attr, column in self.columns():
-            print('123123', attr, column)
             if hasattr(self, attr):
                 v = getattr(self, attr)
                 d[attr] = v

@@ -93,22 +93,8 @@
                 </div>
                 {% for t in topic %}
                     <div class="cell">
-                        <a class="user_avatar pull-left">
-                            <img src="{{ user.image }}" title="{{ user.username }}">
-                        </a>
-                        <span class="reply_count pull-left">
-                    <span class="count_of_replies" title="回复数">
-                        {{ t.replies() | count }}
-                    </span>
-                    <span class="count_seperator">/</span>
-                    <span class="count_of_visits" title="点击数">
-                         {{ t.views }}
-                    </span>
-                </span>
-                        {% set r = t.reply_new() %}
                         <a class="last_time pull-right">
-                            <img class="user_small_avatar" src="{{ r.user().image }}">
-                            <span class="last_active_time" data-created_time="{{ r.created_time }}"></span>
+                            <span class="last_active_time" data-created_time="{{ t.created_time }}"></span>
                         </a>
                         <div class="topic_title_wrapper">
                             <a class="topic_title" href="{{ url_for('topic.detail', id=t.id) }}" title={{ t.title }}>
@@ -123,24 +109,11 @@
                     <span class="col_fade">最近参与的话题</span>
                 </div>
                 {% for t in replied_topic %}
-                    {% set u = t.user() %}
+{#                    {% set u = t.user() %}#}
                     <div class="cell">
-                        <a class="user_avatar pull-left">
-                            <img src="{{ u.image }}" title="{{ u.username }}">
-                        </a>
-                        <span class="reply_count pull-left">
-                    <span class="count_of_replies" title="回复数">
-                        {{ t.replies() | count }}
-                    </span>
-                    <span class="count_seperator">/</span>
-                    <span class="count_of_visits" title="点击数">
-                         {{ t.views }}
-                    </span>
-                </span>
-                        {% set r = t.reply_new() %}
+
                         <a class="last_time pull-right">
-                            <img class="user_small_avatar" src="{{ r.user().image }}">
-                            <span class="last_active_time" data-created_time="{{ r.created_time }}"></span>
+                            <span class="last_active_time" data-created_time="{{ t.created_time }}"></span>
                         </a>
                         <div class="topic_title_wrapper">
                             <a class="topic_title" href="{{ url_for('topic.detail', id=t.id) }}" title={{ t.title }}>
