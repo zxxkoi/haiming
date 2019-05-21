@@ -28,6 +28,7 @@ def index():
         ms = Topic.all()
     else:
         ms = Topic.all(board_id=board_id)
+    ms = sorted(ms, key=lambda m: m.created_time, reverse=True)
     token = new_csrf_token()
     bs = Board.all()
     return render_template("topic/index.html", ms=ms, token=token, bs=bs, bid=board_id, u=u)
