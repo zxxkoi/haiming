@@ -10,7 +10,8 @@ from flask import (
     url_for,
     Blueprint,
     abort,
-    send_from_directory
+    send_from_directory,
+    flash
 )
 
 from routes import *
@@ -61,10 +62,10 @@ def register():
     # 用类函数来判断
     u = User.register(form)
     if u is None:
-        result = '注册失败，用户名已注册或者用户名小于三位'
-        return render_template('index.html', result=result)
-    result = '注册成功'
-    return render_template('index.html', result=result)
+        flash('注册失败，用户名已注册或者用户名小于三位')
+        return redirect(url_for('.index'))
+    flash('注册成功')
+    return redirect(url_for('.index'))
 
 
 @main.route("/login", methods=['POST'])
@@ -74,6 +75,7 @@ def login():
     print('login user <{}>'.format(u))
     if u is None:
         # 转到 topic.index 页面
+        flash('用户名或密码错误')
         return redirect(url_for('.index'))
     else:
         # session 中写入 user_id

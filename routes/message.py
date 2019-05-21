@@ -53,7 +53,8 @@ def add():
 @main.route('/')
 def index():
     u = current_user()
-
+    if u is None:
+        redirect(url_for('index.index'))
     send = Messages.all(sender_username=u.username)
     received = Messages.all(receiver_username=u.username)
 
