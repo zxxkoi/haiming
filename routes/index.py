@@ -207,10 +207,11 @@ def update_password():
         new_pass = request.form['new_pass']
         u.password = User.salted_password(new_pass)
         User.update(u.id, password=u.password)
-        r = 'success'
+        flash('success')
     else:
-        r = 'error'
-    return render_template('setting.html', u=u, result=r, token=new_csrf_token())
+        flash('fail')
+    return redirect(url_for('.setting'))
+    # return render_template('setting.html', u=u, token=new_csrf_token())
 
 
 @main.route('/update/user', methods=['POST'])
@@ -220,8 +221,10 @@ def update_user():
     username = request.form['name']
     signature = request.form['signature']
     User.update(u.id, username=username, signature=signature)
-    r = 'success'
-    return render_template('setting.html', u=u, result=r, token=new_csrf_token())
+    # r = 'success'
+    flash('success')
+    return redirect(url_for('.setting'))
+    # return render_template('setting.html', u=u, token=new_csrf_token())
 
 
 @main.route('/quit')

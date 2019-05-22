@@ -47,11 +47,13 @@
                     </ul>
                 </div>
                 <div class="inner">
-                    {% if result == 'success' %}
+                    {% for message in get_flashed_messages() %}
+                    {% if message == 'success' %}
                         <div class="alert alert-success">保存成功</div>
-                    {% elif result == 'error' %}
+                    {% elif message == 'fail' %}
                         <div class="alert alert-error">请检查密码是否正确</div>
                     {% endif %}
+                    {% endfor %}
 
                     <form id="setting_form" class="form-horizontal" action="{{ url_for('.update_user', token=token) }}"
                           method="post">
