@@ -22,7 +22,7 @@ Vagrant.configure("2") do |config|
 
   # 脚本 初始化
   config.vm.provision "shell", inline: <<-SHELL
-#     换成 root 用户运行
+    # 换成 root 用户运行
     sudo su
     # ls -al /home/vagrant/.ssh/authorized_keys
     # cat /home/vagrant/.ssh/authorized_keys
