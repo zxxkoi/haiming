@@ -1,10 +1,12 @@
 .idea
+venv
 data
 config.py
 log.txt
 secret.py
 .vagrant
 images
+ubuntu-bionic-18.04-cloudimg-console.log
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
